@@ -1,0 +1,26 @@
+version: '3'
+services:
+  web:
+    build: .
+    command: python3 manage.py runserver 0.0.0.0:8000
+    working_dir: /var/www/inventory
+    ports:
+      - 80:80
+    volumes:
+      - .:/var/www/inventory
+    depends_on:
+      - conoha-db-1
+    tty: true
+  conoha-db-1:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'inventory'
+      MYSQL_USER: 'django'
+      MYSQL_ROOT_PASSWORD: '2000Ekffk!!!'
+      MYSQL_PASSWORD: '2000Ekffk!!!'
+    volumes:
+      - ./mysql:/var/lib/mysql
+      - ./my-custom.cnf:/etc/mysql/conf.d/my-custom.cnf:ro
+    ports:
+      - 3306:3306
